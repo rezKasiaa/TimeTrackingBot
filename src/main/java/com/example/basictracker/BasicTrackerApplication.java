@@ -24,10 +24,19 @@ public class BasicTrackerApplication {
 
         System.out.println("Started events ids : " + listOfEventIds);
         System.out.println("Active events for user " + agata.getUserName() + " :" + Event.getActiveEventsByUserId(agata.getUUID()));
-
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         Event.finishEvent(listOfEventIds.get(0));
         System.out.println("Active events for user " + agata.getUserName() + " :" + Event.getActiveEventsByUserId(agata.getUUID()));
 
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         Event.getStatisticForAllActivities(agata.getUUID());
     }
 
