@@ -1,9 +1,6 @@
 package com.example.basictracker;
 
-import com.example.basictracker.entities.Activity;
-import com.example.basictracker.entities.Event;
-import com.example.basictracker.entities.Roles;
-import com.example.basictracker.entities.User;
+import com.example.basictracker.entities.*;
 import com.example.basictracker.utils.ActvitiesHelper;
 import com.example.basictracker.utils.UserHelper;
 import org.springframework.boot.SpringApplication;
@@ -20,23 +17,26 @@ public class BasicTrackerApplication {
         SpringApplication.run(BasicTrackerApplication.class, args);
         insertData();
 
-       var listOfEventIds = UserHelper.getListOfActiveUsers().stream().map(x -> new Event()
-                .generateEvent(x.getUUID(), ActvitiesHelper.getBasicActivities().get(0).getId())).collect(Collectors.toList());
+        User agata = UserHelper.getListOfActiveUsers().get(0);
 
-        System.out.println("Created event`s ids : " + listOfEventIds);
+        var listOfEventIds = ActvitiesHelper.getBasicActivities().stream()
+                .map(x -> new Event().generateEvent(agata.getUUID(), x.getId())).collect(Collectors.toList());
 
-        listOfEventIds.stream().forEach(x -> Event.finishEvent(x));
+        System.out.println("Started events ids : " + listOfEventIds);
+        System.out.println("Active events for user " + agata.getUserName() + " :" + Event.getActiveEventsByUserId(agata.getUUID()));
+
+        Event.finishEvent(listOfEventIds.get(0));
+        System.out.println("Active events for user " + agata.getUserName() + " :" + Event.getActiveEventsByUserId(agata.getUUID()));
+
+        Event.getStatisticForAllActivities(agata.getUUID());
     }
 
     public static void insertData() {
         User agata = new User("Agata", Roles.ADMIN);
-        User kornej = new User("Kornej", Roles.ADMIN);
-        UserHelper.setListOfActiveUsers(List.of(agata, kornej));
+        UserHelper.setListOfActiveUsers(List.of(agata));
 
-        String[] activities = {"sleep", "eat", "work", "play"};
-        ActvitiesHelper.setBasicActivities(Arrays.stream(activities)
-                .map(x -> new Activity(x))
+        ActvitiesHelper.setBasicActivities(Arrays.stream(BasicActivities.values())
+                .map(x -> new Activity(x.toString()))
                 .collect(Collectors.toList()));
     }
-
 }
