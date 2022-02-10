@@ -1,6 +1,5 @@
 package com.example.basictracker.utils;
 
-import com.example.basictracker.entities.Activity;
 import com.example.basictracker.entities.User;
 import lombok.Getter;
 import lombok.Setter;
