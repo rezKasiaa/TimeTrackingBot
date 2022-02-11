@@ -22,12 +22,16 @@ public class EventHelper {
 
 
     public static Long generateEvent(Long userId, Long activityId) {
-        var event = Event.builder()
-                .id(Utils.generateRandomId(5))
-                .activityId(activityId)
-                .userId(userId)
-                .timeStamp(LocalDateTime.now())
-                .build();
+        var event = new Event();
+        event.setUserId(userId);
+        event.setActivityId(activityId);
+        event.setTimeStamp(LocalDateTime.now());
+//                Event.builder()
+//                .id(Utils.generateRandomId(5))
+//                .activityId(activityId)
+//                .userId(userId)
+//                .timeStamp(LocalDateTime.now())
+//                .build();
 
         startedActivities.put(event, ActvitiesHelper.getActivityById(activityId));
         System.out.println("Activity " + ActvitiesHelper.getActivityById(activityId).getActivityName()
