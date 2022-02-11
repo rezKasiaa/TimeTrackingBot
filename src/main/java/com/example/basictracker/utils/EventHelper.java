@@ -17,11 +17,11 @@ import java.util.stream.Collectors;
 @Setter
 @Getter
 public class EventHelper {
-    private static Map<Activity, Event> startedActivities = new HashMap<>();
+    private static Map<Event, Activity> startedActivities = new HashMap<>();
     private static Map<Event, LocalDateTime> activityDuration = new HashMap<>();
 
 
-    public String generateEvent(String userId, String activityId) {
+    public static String generateEvent(String userId, String activityId) {
         var event = Event.builder()
                 .id(Utils.generateRandomId(5))
                 .activityId(activityId)
@@ -29,7 +29,7 @@ public class EventHelper {
                 .timeStamp(LocalDateTime.now())
                 .build();
 
-        startedActivities.put(ActvitiesHelper.getActivityById(activityId), event);
+        startedActivities.put(event, ActvitiesHelper.getActivityById(activityId));
         System.out.println("Activity " + ActvitiesHelper.getActivityById(activityId).getActivityName()
                 + " started!Keep going!");
 
@@ -37,12 +37,12 @@ public class EventHelper {
     }
 
     public static void finishEvent(String eventId) {
-        for (Event s : startedActivities.values()) {
+        for (Event s : startedActivities.keySet()) {
             if (eventId.equals(s.getId())) {
                 LocalDateTime duration = LocalDateTime.now().minusMinutes(s.getTimeStamp().getMinute());
                 s.setTimeStamp(duration);
                 activityDuration.put(s, duration);
-                startedActivities.remove(ActvitiesHelper.getActivityById(s.getActivityId()));
+                startedActivities.remove(s);
                 System.out.println("Activity " + ActvitiesHelper.getActivityById(s.getActivityId()).getActivityName()
                         + " successfully finished. Good job!");
                 break;
@@ -51,7 +51,7 @@ public class EventHelper {
     }
 
     public static List<String> getActiveEventsByUserId(String userId) {
-       return startedActivities.values().stream()
+       return startedActivities.keySet().stream()
                 .filter(x -> userId.equals(x.getUserId()))
                 .map(x -> ActvitiesHelper.getActivityById(x.getActivityId()).getActivityName())
                 .collect(Collectors.toList());
@@ -67,7 +67,7 @@ public class EventHelper {
             }
         });
         System.out.println("Active activities : ");
-        startedActivities.values().stream().filter(x -> userId.equals(x.getUserId())).forEach(x -> {
+        startedActivities.keySet().stream().filter(x -> userId.equals(x.getUserId())).forEach(x -> {
             try {
                 System.out.println(showStatistics(x));
             } catch (ParseException e) {

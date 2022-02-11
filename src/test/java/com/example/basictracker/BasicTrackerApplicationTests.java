@@ -2,6 +2,7 @@ package com.example.basictracker;
 
 import com.example.basictracker.entities.*;
 import com.example.basictracker.utils.ActvitiesHelper;
+import com.example.basictracker.utils.EventHelper;
 import com.example.basictracker.utils.UserHelper;
 import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.Assertions;
@@ -29,23 +30,23 @@ class BasicTrackerApplicationTests {
                 .map(x -> new Activity(x.toString()))
                 .collect(Collectors.toList()));
 
-        var listOfEventIds = UserHelper.getListOfActiveUsers().stream().map(x -> new Event()
-                .generateEvent(x.getUUID(), ActvitiesHelper.getBasicActivities().get(0).getId())).collect(Collectors.toList());
+        var listOfEventIds = UserHelper.getListOfActiveUsers().stream()
+                .map(x -> EventHelper.generateEvent(x.getUUID(), ActvitiesHelper.getBasicActivities().get(0).getId())).collect(Collectors.toList());
 
-       var activityForAgata = Event.getActiveEventsByUserId(agata.getUUID());
+       var activityForAgata = EventHelper.getActiveEventsByUserId(agata.getUUID());
        Assertions.assertEquals(activityForAgata.size(), 1);
        Assertions.assertEquals(activityForAgata.get(0), ActvitiesHelper.getBasicActivities().get(0).getActivityName());
 
-        var activityForKornej = Event.getActiveEventsByUserId(kornej.getUUID());
+        var activityForKornej = EventHelper.getActiveEventsByUserId(kornej.getUUID());
         Assertions.assertEquals(activityForKornej.size(), 1);
         Assertions.assertEquals(activityForKornej.get(0), ActvitiesHelper.getBasicActivities().get(0).getActivityName());
 
-        listOfEventIds.stream().forEach(x -> Event.finishEvent(x));
+        listOfEventIds.stream().forEach(x -> EventHelper.finishEvent(x));
 
-        activityForAgata = Event.getActiveEventsByUserId(agata.getUUID());
+        activityForAgata = EventHelper.getActiveEventsByUserId(agata.getUUID());
         Assertions.assertTrue(activityForAgata.isEmpty());
 
-        activityForKornej = Event.getActiveEventsByUserId(kornej.getUUID());
+        activityForKornej = EventHelper.getActiveEventsByUserId(kornej.getUUID());
         Assertions.assertTrue(activityForKornej.isEmpty());
     }
 }

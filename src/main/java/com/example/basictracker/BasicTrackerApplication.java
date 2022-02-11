@@ -2,6 +2,7 @@ package com.example.basictracker;
 
 import com.example.basictracker.entities.*;
 import com.example.basictracker.utils.ActvitiesHelper;
+import com.example.basictracker.utils.EventHelper;
 import com.example.basictracker.utils.UserHelper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,24 +21,24 @@ public class BasicTrackerApplication {
         User agata = UserHelper.getListOfActiveUsers().get(0);
 
         var listOfEventIds = ActvitiesHelper.getBasicActivities().stream()
-                .map(x -> new Event().generateEvent(agata.getUUID(), x.getId())).collect(Collectors.toList());
+                .map(x -> EventHelper.generateEvent(agata.getUUID(), x.getId())).collect(Collectors.toList());
 
         System.out.println("Started events ids : " + listOfEventIds);
-        System.out.println("Active events for user " + agata.getUserName() + " :" + Event.getActiveEventsByUserId(agata.getUUID()));
+        System.out.println("Active events for user " + agata.getUserName() + " :" + EventHelper.getActiveEventsByUserId(agata.getUUID()));
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Event.finishEvent(listOfEventIds.get(0));
-        System.out.println("Active events for user " + agata.getUserName() + " :" + Event.getActiveEventsByUserId(agata.getUUID()));
+        EventHelper.finishEvent(listOfEventIds.get(0));
+        System.out.println("Active events for user " + agata.getUserName() + " :" + EventHelper.getActiveEventsByUserId(agata.getUUID()));
 
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Event.getStatisticForAllActivities(agata.getUUID());
+        EventHelper.getStatisticForAllActivities(agata.getUUID());
     }
 
     public static void insertData() {
