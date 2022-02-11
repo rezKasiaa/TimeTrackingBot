@@ -1,25 +1,25 @@
 package com.example.basictracker.entities;
 
-import com.example.basictracker.utils.ActvitiesHelper;
-import com.example.basictracker.utils.EventHelper;
-import com.example.basictracker.utils.Utils;
 import lombok.*;
 
-import java.text.ParseException;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
 @Builder
 @ToString
+@Entity
 public class Event {
-    private String id;
-    private String userId;
-    private String activityId;
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Long id;
+    private Long userId;
+    private Long activityId;
     private LocalDateTime timeStamp;
+
+    public Event() {}
 }

@@ -16,7 +16,7 @@ public class ActvitiesHelper {
     private ActvitiesHelper() {
     }
 
-    public static Activity getActivityById(String id) {
+    public static Activity getActivityById(Long id) {
         Optional<Activity> activity = basicActivities.stream().filter(x -> id.equals(x.getId())).findAny();
         return activity.isPresent() ? activity.get() : null;
     }

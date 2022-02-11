@@ -21,7 +21,7 @@ public class EventHelper {
     private static Map<Event, LocalDateTime> activityDuration = new HashMap<>();
 
 
-    public static String generateEvent(String userId, String activityId) {
+    public static Long generateEvent(Long userId, Long activityId) {
         var event = Event.builder()
                 .id(Utils.generateRandomId(5))
                 .activityId(activityId)
@@ -36,7 +36,7 @@ public class EventHelper {
         return event.getId();
     }
 
-    public static void finishEvent(String eventId) {
+    public static void finishEvent(Long eventId) {
         for (Event s : startedActivities.keySet()) {
             if (eventId.equals(s.getId())) {
                 LocalDateTime duration = LocalDateTime.now().minusMinutes(s.getTimeStamp().getMinute());
@@ -50,14 +50,14 @@ public class EventHelper {
         }
     }
 
-    public static List<String> getActiveEventsByUserId(String userId) {
+    public static List<String> getActiveEventsByUserId(Long userId) {
        return startedActivities.keySet().stream()
                 .filter(x -> userId.equals(x.getUserId()))
                 .map(x -> ActvitiesHelper.getActivityById(x.getActivityId()).getActivityName())
                 .collect(Collectors.toList());
     }
 
-    public static void getStatisticForAllActivities(String userId) {
+    public static void getStatisticForAllActivities(Long userId) {
         System.out.println("Finished activities : ");
         activityDuration.keySet().stream().filter(x -> userId.equals(x.getUserId())).forEach(x -> {
             try {
