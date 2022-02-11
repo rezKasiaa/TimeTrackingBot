@@ -5,22 +5,22 @@ import com.example.basictracker.repositores.UserRepository;
 import com.example.basictracker.utils.ActvitiesHelper;
 import com.example.basictracker.utils.EventHelper;
 import com.example.basictracker.utils.UserHelper;
-import lombok.extern.slf4j.Slf4j;
+
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import org.slf4j.Logger;
 import java.util.stream.Collectors;
 
 @SpringBootApplication
-@Slf4j
 public class BasicTrackerApplication {
+    Logger logger = LoggerFactory.getLogger(BasicTrackerApplication.class);
 
     public static void main(String[] args) {
         SpringApplication.run(BasicTrackerApplication.class, args);
@@ -60,19 +60,19 @@ public class BasicTrackerApplication {
             repository.save(new User("Michelle", Roles.USER));
 
             // fetch all users
-            log.info("Customers found with findAll():");
-            log.info("-------------------------------");
+            logger.info("Customers found with findAll():");
+            logger.info("-------------------------------");
             for (User user : repository.findAll()) {
-                log.info(user.toString());
+                logger.info(user.toString());
             }
-            log.info("");
+            logger.info("");
 
             // fetch an individual user by ID
             Optional<User> user = repository.findById(1L);
-            log.info("Customer found with findById(1L):");
-            log.info("--------------------------------");
-            log.info(user.toString());
-            log.info("");
+            logger.info("Customer found with findById(1L):");
+            logger.info("--------------------------------");
+            logger.info(user.toString());
+            logger.info("");
         };
 
 //    public static void insertData() {
